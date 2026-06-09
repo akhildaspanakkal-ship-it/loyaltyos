@@ -983,7 +983,7 @@ function renderRecent(){
 /* Share popup (replaces Twilio WhatsApp) */
 function buildSaleMessage(c,total,pts){
   // Format requested by user
-  return `Hello ${c.name} Thanks for shopping at ${DB.settings.shopName}. Your order total was ${CURRENCY} ${(Number(total)||0).toFixed(2)}. You've just earned ${pts} points! 🌟 Your status is now ${c.current_tier}. Track your rewards here: ${DB.settings.appUrl||''}/rewards/${c.phone}`;
+  return `Hello ${c.name} Thanks for shopping at ${DB.settings.shopName}. Your order total was ${CURRENCY} ${(Number(total)||0).toFixed(2)}. You've just earned ${pts} points! 🌟 Your status is now ${c.current_tier}. Track your rewards here: ${DB.settings.appUrl||''}`;
 }
 function showWAPopup(c,total,pts,refBy,campaign){
   const z=document.getElementById('popup-zone');
@@ -1118,7 +1118,7 @@ function openReceipt(txId){
       <div style="text-align:center;margin-top:16px"><div class="qr-box" id="rcpt-qr"></div><div class="muted" style="margin-top:6px">Scan to view rewards</div></div>
       <button class="btn btn-gold print-btn" style="margin-top:16px" onclick="window.print()">Print Receipt</button>
     </div></div>`;
-  if(c)new QRCode(document.getElementById('rcpt-qr'),{text:`${DB.settings.appUrl}/rewards/${c.phone}`,width:120,height:120});
+  if(c)new QRCode(document.getElementById('rcpt-qr'),{text:`${DB.settings.appUrl}`,width:120,height:120});
 }
 
 /* ===== Campaigns ===== */
@@ -1230,7 +1230,7 @@ function sendCampaignTeasers(id){
   if(!confirm(`Open share popup for ${targets.length} customer(s) for "${cm.name}"?`))return;
   for(const c of targets){
     const away=cm.pointsRequired-c.points_balance;
-    const msg=`Hi ${c.name}! 🌟 You're only ${away} points away from getting a FREE ${cm.productName} at ${DB.settings.shopName}!\n\n${cm.description||''}\n\nVisit us soon to redeem. ${DB.settings.appUrl||''}/rewards/${c.phone}`;
+    const msg=`Hi ${c.name}! 🌟 You're only ${away} points away from getting a FREE ${cm.productName} at ${DB.settings.shopName}!\n\n${cm.description||''}\n\nVisit us soon to redeem. ${DB.settings.appUrl||''}`;
     showSharePopup({title:DB.settings.shopName,phone:c.phone,name:c.name,message:msg});
   }
 }
@@ -1299,8 +1299,8 @@ function editNote(cid,cell){
 function showCustQR(cid){
   const c=DB.customers.find(x=>x.id===cid);
   const z=document.getElementById('modal-zone');
-  z.innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)this.remove()"><div class="modal" style="max-width:320px;text-align:center"><button class="x" onclick="this.closest('.modal-overlay').remove()">×</button><h3>${escH(c.name)}</h3><div class="muted" style="margin-bottom:10px">${escH(c.phone)}</div><div class="qr-box" id="cust-qr"></div><div class="muted" style="margin-top:10px">${escH(DB.settings.appUrl)}/rewards/${escH(c.phone)}</div></div></div>`;
-  new QRCode(document.getElementById('cust-qr'),{text:`${DB.settings.appUrl}/rewards/${c.phone}`,width:200,height:200});
+  z.innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)this.remove()"><div class="modal" style="max-width:320px;text-align:center"><button class="x" onclick="this.closest('.modal-overlay').remove()">×</button><h3>${escH(c.name)}</h3><div class="muted" style="margin-bottom:10px">${escH(c.phone)}</div><div class="qr-box" id="cust-qr"></div><div class="muted" style="margin-top:10px">${escH(DB.settings.appUrl)}</div></div></div>`;
+  new QRCode(document.getElementById('cust-qr'),{text:`${DB.settings.appUrl}`,width:200,height:200});
 }
 
 /* Exports */
