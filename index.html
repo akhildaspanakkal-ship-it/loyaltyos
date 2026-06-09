@@ -624,22 +624,14 @@ function doLogin(){
   if(u===DB.settings.ownerUser&&p===DB.settings.ownerPass){
     err.innerHTML='';
     document.getElementById('li-pass').value='';
-    sessionStorage.setItem('los_auth','1');
-    // Open the dashboard in a NEW window/tab
-    const url=window.location.pathname+'?app=1'+window.location.hash;
-    const w=window.open(url,'_blank');
-    if(!w){
-      // Popup blocked — fall back to navigating current tab
-      window.location.href=url;
-      return;
-    }
-    // Show a friendly confirmation on this tab
-    err.innerHTML='<div class="err" style="background:#ecfdf5;color:#065f46;border-color:#bbf7d0">Dashboard opened in a new window. You can close this tab.</div>';
+    showScreen('app');
+    showPanel('pos');
+    renderPOS();
   } else {
     err.innerHTML='<div class="err">Invalid username or password.</div>';
   }
 }
-function logout(){sessionStorage.removeItem('los_auth');showScreen('login')}
+function logout(){showScreen('login')}
 
 /* ===== Customer portal OTP ===== */
 let otpCode=null, otpExp=0, otpPhone=null;
@@ -991,7 +983,7 @@ function renderRecent(){
 /* Share popup (replaces Twilio WhatsApp) */
 function buildSaleMessage(c,total,pts){
   // Format requested by user
-  return `Hello ${c.name} Thanks for shopping at ${DB.settings.shopName}. Your order total was ${CURRENCY} ${(Number(total)||0).toFixed(2)}. You've just earned ${pts} points! 🌟 Your status is now ${c.current_tier}. Track your rewards here: ${DB.settings.appUrl||''};
+  return `Hello ${c.name} Thanks for shopping at ${DB.settings.shopName}. Your order total was ${CURRENCY} ${(Number(total)||0).toFixed(2)}. You've just earned ${pts} points! 🌟 Your status is now ${c.current_tier}. Track your rewards here: ${DB.settings.appUrl||''}/rewards/${c.phone}`;
 }
 function showWAPopup(c,total,pts,refBy,campaign){
   const z=document.getElementById('popup-zone');
@@ -1493,16 +1485,6 @@ document.getElementById('li-user').value='';
 document.getElementById('li-pass').value='';
 document.getElementById('dp-badge').classList.toggle('on',DB.doublePoints);
 document.getElementById('dp-badge').textContent=DB.doublePoints?'🔥 2× ON':'2× Points';
-// If launched as the dashboard window (?app=1) and a session auth flag exists, go straight in.
-(function(){
-  const params=new URLSearchParams(window.location.search);
-  if(params.get('app')==='1' && sessionStorage.getItem('los_auth')==='1'){
-    showScreen('app');
-    const hash=(window.location.hash||'').replace('#','');
-    const panel=['pos','customers','campaigns','analytics','leaderboard','settings'].includes(hash)?hash:'pos';
-    showPanel(panel); renderPOS();
-  }
-})();
 </script>
 </body>
 </html>
