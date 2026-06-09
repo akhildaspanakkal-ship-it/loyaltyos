@@ -991,7 +991,7 @@ function renderRecent(){
 /* Share popup (replaces Twilio WhatsApp) */
 function buildSaleMessage(c,total,pts){
   // Format requested by user
-  return `Hello ${c.name} Thanks for shopping at ${DB.settings.shopName}. Your order total was ${CURRENCY} ${(Number(total)||0).toFixed(2)}. You've just earned ${pts} points! 🌟 Your status is now ${c.current_tier}. Track your rewards here: ${DB.settings.appUrl||''}/rewards/${c.phone}`;
+  return `Hello ${c.name} Thanks for shopping at ${DB.settings.shopName}. Your order total was ${CURRENCY} ${(Number(total)||0).toFixed(2)}. You've just earned ${pts} points! 🌟 Your status is now ${c.current_tier}. Track your rewards here: ${DB.settings.appUrl||''}${c.phone}`;
 }
 function showWAPopup(c,total,pts,refBy,campaign){
   const z=document.getElementById('popup-zone');
