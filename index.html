@@ -31,7 +31,8 @@ input,select,textarea{font-family:inherit;font-size:14px;background:#fff;color:v
 input:focus,select:focus,textarea:focus{border-color:var(--indigo)}
 input::placeholder,textarea::placeholder{color:var(--text3)}
 .screen{display:none;min-height:100vh}
-.screen.active{display:block}
+.screen.active{display:block;animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
 /* ===== Owner Login ===== */
 #screen-login{display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at top,rgba(99,102,241,.10),transparent 60%),#fafbfd;min-height:100vh}
@@ -247,45 +248,101 @@ th{color:var(--text2);font-weight:500;font-size:11px;text-transform:uppercase;le
 #qr-reader{width:100%;max-width:400px;margin:0 auto}
 #qr-reader video{border-radius:var(--r)}
 
-/* WhatsApp-style chat popup */
-.share-popup{position:fixed;bottom:20px;right:20px;width:340px;background:#e5ddd5;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35);z-index:200;animation:slideUp .3s ease;font-family:'DM Sans',system-ui,sans-serif;display:flex;flex-direction:column;max-height:520px}
-.share-popup .hdr{background:#075e54;color:#fff;padding:10px 12px;display:flex;align-items:center;gap:10px;font-size:14px}
-.share-popup .hdr .av{width:36px;height:36px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0;overflow:hidden}
-.share-popup .hdr .av img{width:100%;height:100%;object-fit:cover}
-.share-popup .hdr .who{flex:1;min-width:0;line-height:1.2}
-.share-popup .hdr .who .nm{font-weight:600;font-size:14px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.share-popup .hdr .who .st{font-size:11px;color:#cce8e0}
-.share-popup .x{cursor:pointer;font-size:20px;background:transparent;color:#fff;width:auto;padding:0 6px;line-height:1}
-.share-popup .chat{background:#e5ddd5 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><circle cx='2' cy='2' r='1' fill='%23d4ccc2'/></svg>");padding:14px 10px;overflow-y:auto;flex:1;min-height:120px;max-height:340px;display:flex;flex-direction:column;gap:8px}
-.share-popup .bubble{align-self:flex-end;background:#dcf8c6;color:#0f172a;border-radius:8px 0 8px 8px;padding:8px 10px 18px;font-size:13.5px;line-height:1.4;max-width:88%;position:relative;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 1px 0.5px rgba(0,0,0,.13)}
-.share-popup .bubble .time{position:absolute;bottom:4px;right:8px;font-size:10px;color:#667781;display:flex;align-items:center;gap:3px}
-.share-popup .bubble .ticks{font-size:11px;letter-spacing:-2px}
-.share-popup .bubble.in{align-self:flex-start;background:#fff;border-radius:0 8px 8px 8px}
-.share-popup .typing{align-self:flex-start;background:#fff;border-radius:0 8px 8px 8px;padding:10px 12px;display:flex;gap:3px;box-shadow:0 1px 0.5px rgba(0,0,0,.13)}
-.share-popup .typing span{width:6px;height:6px;border-radius:50%;background:#94a3b8;animation:tdot 1.2s infinite}
-.share-popup .typing span:nth-child(2){animation-delay:.2s}.share-popup .typing span:nth-child(3){animation-delay:.4s}
-@keyframes tdot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
-.share-popup .status-row{padding:6px 12px;background:#f0f0f0;font-size:11px;color:#667781;text-align:center;border-top:1px solid #d4ccc2}
-.share-popup .acts{display:flex;gap:6px;padding:8px 10px;background:#f0f0f0;border-top:1px solid #d4ccc2}
-.share-popup .acts button{flex:1;font-size:11px;padding:6px 8px}
-.tick-sent{color:#667781}.tick-delivered{color:#667781}.tick-read{color:#4fc3f7}
+/* Sale success modal */
+.sale-modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:300;animation:fadeIn .25s ease;padding:20px}
+.sale-modal{width:100%;max-width:460px;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(15,23,42,.35);animation:pop .35s cubic-bezier(.2,.9,.3,1.2);max-height:92vh;overflow-y:auto}
+.sale-modal .sm-hero{background:linear-gradient(135deg,#c89a18 0%,#e6b832 50%,#f5c842 100%);color:#fff;padding:24px 24px 20px;position:relative;text-align:center}
+.sale-modal .sm-hero .check{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.22);display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:10px;border:2px solid rgba(255,255,255,.5)}
+.sale-modal .sm-hero h2{font-family:'Syne';font-size:22px;font-weight:700;margin:0 0 4px}
+.sale-modal .sm-hero p{font-size:13px;opacity:.92;margin:0}
+.sale-modal .sm-close{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.25);border:0;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;padding:0}
+.sale-modal .sm-summary{padding:18px 24px;display:grid;grid-template-columns:1fr 1fr;gap:12px;border-bottom:1px dashed var(--border)}
+.sale-modal .sm-stat{background:var(--bg3);border-radius:12px;padding:12px 14px}
+.sale-modal .sm-stat .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-weight:600;margin-bottom:4px}
+.sale-modal .sm-stat .val{font-family:'Syne';font-weight:700;font-size:18px;color:var(--text)}
+.sale-modal .sm-stat.gold{background:linear-gradient(135deg,#fff4cf,#ffe79a);border:1px solid #f1d670}
+.sale-modal .sm-stat.gold .val{color:#8a6a00}
+.sale-modal .sm-stat.full{grid-column:1/-1}
+.sale-modal .sm-cust{padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fffaf0;font-size:13px}
+.sale-modal .sm-cust .nm{font-weight:600}
+.sale-modal .sm-cust .ph{color:var(--text2);font-size:12px}
+.sale-modal .sm-wa{padding:18px 24px 8px}
+.sale-modal .sm-wa-label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em}
+.sale-modal .sm-wa-label .dot{width:18px;height:18px;border-radius:50%;background:#25d366;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:11px}
+.sale-modal .wa-bubble{background:#dcf8c6;border-radius:14px 14px 14px 4px;padding:12px 14px;font-size:13px;line-height:1.55;color:#0b3d2e;white-space:pre-wrap;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.05)}
+.sale-modal .wa-bubble:before{content:'';position:absolute;left:-6px;bottom:6px;width:0;height:0;border:6px solid transparent;border-right-color:#dcf8c6;border-left:0}
+.sale-modal .sm-acts{display:flex;gap:8px;padding:16px 24px 22px}
+.sale-modal .sm-acts button{flex:1;padding:12px;border-radius:12px;font-weight:600;font-size:13px;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:transform .15s, box-shadow .15s}
+.sale-modal .sm-acts button:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(15,23,42,.12)}
+.sale-modal .sm-acts .b-share{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff}
+.sale-modal .sm-acts .b-copy{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.sale-modal .sm-acts .b-copy.ok{background:#dcfce7;border-color:#86efac;color:#065f46}
 
 /* Customers panel */
 .cust-list-grid{display:grid;grid-template-columns:340px 1fr;gap:16px}
 @media(max-width:900px){.cust-list-grid{grid-template-columns:1fr}}
-.cust-item{padding:12px 14px;border:1px solid var(--border);border-radius:var(--r);background:#fff;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;transition:all .15s}
-.cust-item:hover{border-color:var(--gold3);background:#fffaeb}
-.cust-item.active{border-color:var(--gold2);background:#fff4cf}
-.cust-item .nm{font-weight:600;font-size:14px}
+.cust-item{padding:12px 14px;border:1px solid var(--border);border-radius:14px;background:#fff;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .15s}
+.cust-item:hover{border-color:var(--gold3);background:#fffaeb;transform:translateX(2px)}
+.cust-item.active{border-color:var(--gold2);background:#fff4cf;box-shadow:0 4px 14px rgba(200,154,24,.15)}
+.cust-item .ci-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Syne';font-weight:700;font-size:13px;flex-shrink:0}
+.cust-item .ci-main{flex:1;min-width:0}
+.cust-item .nm{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cust-item .ph{font-size:12px;color:var(--text2)}
-.cust-item .pts{font-family:'Syne';font-weight:700;color:var(--gold2)}
-.cust-detail-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
-.cust-detail-head h2{font-size:22px}
+.cust-item .ci-right{text-align:right;flex-shrink:0}
+.cust-item .pts{font-family:'Syne';font-weight:700;color:var(--gold2);font-size:16px;line-height:1}
+.cust-item .ci-tier{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-top:2px;font-weight:600}
+.cust-detail-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.cust-detail-head h2{font-size:20px;margin:0}
+.cust-detail-head .cdh-id{display:flex;align-items:center;gap:12px}
+.cust-detail-head .cdh-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Syne';font-weight:700;font-size:18px}
+.cdh-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cdh-stat{background:var(--bg3);border-radius:12px;padding:12px 14px;text-align:center}
+.cdh-stat .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-weight:600;margin-bottom:4px}
+.cdh-stat .val{font-family:'Syne';font-weight:700;font-size:18px;color:var(--text)}
+
+/* Role tabs on login */
+.role-tabs{display:flex;background:var(--bg3);border-radius:999px;padding:4px;margin-bottom:20px;gap:4px}
+.role-tab{flex:1;padding:9px 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;text-align:center;transition:all .2s}
+.role-tab.active{background:#fff;color:var(--gold2);box-shadow:0 2px 6px rgba(15,23,42,.08)}
+
+/* Campaign teaser hint on POS */
+.camp-away{background:linear-gradient(135deg,#fff8e1,#ffeec2);border:1px solid #f1d670;border-radius:var(--r);padding:12px 14px;margin-top:10px;display:flex;align-items:center;gap:12px}
+.camp-away .ca-icon{font-size:28px}
+.camp-away .ca-body{flex:1;font-size:13px;color:#8a6a00}
+.camp-away .ca-body b{color:#5a4400;font-family:'Syne'}
+
+/* Owner dashboard */
+.cashier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.cashier-card{background:#fff;border:1px solid var(--border);border-radius:var(--r2);padding:18px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
+.cashier-card .ch-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.cashier-card .ch-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),var(--indigo2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Syne';font-weight:700}
+.cashier-card .ch-nm{font-weight:700;font-family:'Syne';font-size:15px}
+.cashier-card .ch-loc{font-size:12px;color:var(--text2)}
+.cashier-card .ch-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cashier-card .ch-stat{background:var(--bg3);border-radius:10px;padding:10px;text-align:center}
+.cashier-card .ch-stat .v{font-family:'Syne';font-weight:700;font-size:18px;color:var(--gold2)}
+.cashier-card .ch-stat .l{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-top:2px}
+
+/* Cashier mgmt list */
+.cashier-row{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;background:#fff}
+.cashier-row .cr-main{flex:1}
+.cashier-row .cr-nm{font-weight:600}
+.cashier-row .cr-meta{font-size:12px;color:var(--text2)}
+
+/* Campaign share modal */
+.targets-list{max-height:340px;overflow:auto;margin:14px 0;border:1px solid var(--border);border-radius:var(--r)}
+.target-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-bottom:1px solid var(--border)}
+.target-row:last-child{border-bottom:0}
+.target-row .tr-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Syne';font-weight:700;font-size:12px;flex-shrink:0}
+.target-row .tr-main{flex:1;min-width:0}
+.target-row .tr-nm{font-weight:600;font-size:13px}
+.target-row .tr-meta{font-size:11px;color:var(--text2)}
+.target-row .tr-away{font-size:11px;color:var(--gold2);font-weight:600}
 </style>
 </head>
 <body>
 
-<!-- ============ SCREEN 1 — OWNER LOGIN ============ -->
+<!-- ============ SCREEN 1 — LOGIN (OWNER OR EMPLOYEE) ============ -->
 <div id="screen-login" class="screen active">
   <div class="login-card">
     <div class="logo-row">
@@ -294,7 +351,13 @@ th{color:var(--text2);font-weight:500;font-size:11px;text-transform:uppercase;le
     </div>
     <div class="company-name" id="login-company">Aurora Boutique</div>
     <div class="company-tag">Merchant rewards & CRM platform</div>
-    <h2>Owner Sign In</h2>
+
+    <div class="role-tabs" id="role-tabs">
+      <div class="role-tab active" data-role="owner" onclick="setLoginRole('owner')">👑 Owner</div>
+      <div class="role-tab" data-role="employee" onclick="setLoginRole('employee')">🧑‍💼 Cashier</div>
+    </div>
+
+    <h2 id="login-title">Owner Sign In</h2>
     <div id="login-err"></div>
     <div class="field"><label>Username</label><input id="li-user" autocomplete="username" /></div>
     <div class="field"><label>Password</label><input id="li-pass" type="password" autocomplete="current-password" /></div>
@@ -316,7 +379,7 @@ th{color:var(--text2);font-weight:500;font-size:11px;text-transform:uppercase;le
     <div class="cust-card" id="cust-step1">
       <h2>Check Your Rewards</h2>
       <div class="sub">Enter your phone number to view your points & status</div>
-      <div class="field"><label>Phone Number</label><input id="cust-phone" inputmode="numeric" placeholder="971501234567" /></div>
+      <div class="field"><label>Phone Number</label><div style="display:flex;gap:6px;align-items:stretch"><span style="display:flex;align-items:center;padding:0 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-weight:600">🇦🇪 +971</span><input id="cust-phone" inputmode="numeric" placeholder="501234567" maxlength="10" style="flex:1" /></div></div>
       <div id="cust-err"></div>
       <button class="btn btn-gold" onclick="custSendOtp()">Send OTP</button>
     </div>
@@ -362,20 +425,34 @@ th{color:var(--text2);font-weight:500;font-size:11px;text-transform:uppercase;le
       <div class="brand" style="font-size:17px" id="nav-name">Loyalty<span>OS</span></div>
     </div>
     <div class="nav-tabs">
+      <div class="nav-tab role-owner" data-panel="dashboard" onclick="showPanel('dashboard')">📊 Dashboard</div>
       <div class="nav-tab active" data-panel="pos" onclick="showPanel('pos')">Cashier POS</div>
       <div class="nav-tab" data-panel="customers" onclick="showPanel('customers')">Customers</div>
       <div class="nav-tab" data-panel="campaigns" onclick="showPanel('campaigns')">Campaigns</div>
-      <div class="nav-tab" data-panel="analytics" onclick="showPanel('analytics')">Analytics</div>
+      <div class="nav-tab role-owner" data-panel="analytics" onclick="showPanel('analytics')">Analytics</div>
       <div class="nav-tab" data-panel="leaderboard" onclick="showPanel('leaderboard')">Leaderboard</div>
-      <div class="nav-tab" data-panel="settings" onclick="showPanel('settings')">Settings</div>
+      <div class="nav-tab role-owner" data-panel="settings" onclick="showPanel('settings')">Settings</div>
     </div>
     <div class="nav-right">
+      <span class="muted" id="nav-cashier" style="font-size:12px"></span>
       <button class="dp-toggle" id="dp-badge" onclick="toggleDP()">2× Points</button>
       <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
     </div>
   </div>
 
   <div class="app-body">
+    <!-- Owner Dashboard -->
+    <div class="panel" id="panel-dashboard">
+      <div class="card" style="background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(245,200,66,.05));border-color:rgba(99,102,241,.2)">
+        <h3>Owner Overview</h3>
+        <div class="kpi-grid" id="dash-kpis"></div>
+      </div>
+      <div class="card">
+        <h3>Cashier Activity <span class="muted" style="font-weight:400;font-size:13px">— transactions, revenue & store location</span></h3>
+        <div class="cashier-grid" id="dash-cashiers"></div>
+      </div>
+    </div>
+
     <!-- POS -->
     <div class="panel active" id="panel-pos">
       <div class="pos-grid">
@@ -384,7 +461,7 @@ th{color:var(--text2);font-weight:500;font-size:11px;text-transform:uppercase;le
             <h3>Customer Lookup</h3>
             <div class="field"><label>Phone Number</label>
               <div class="scan-row">
-                <div class="grow"><input id="pos-phone" inputmode="numeric" placeholder="Type to search… (e.g. 971501234567)" /></div>
+                <div class="grow" style="display:flex;gap:6px;align-items:stretch"><span style="display:flex;align-items:center;padding:0 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-weight:600;white-space:nowrap">🇦🇪 +971</span><input id="pos-phone" inputmode="numeric" placeholder="501234567" maxlength="10" style="flex:1" /></div>
                 <button class="btn btn-ghost btn-sm" onclick="openScanner()" title="Scan customer QR">📷 Scan QR</button>
               </div>
             </div>
@@ -420,11 +497,11 @@ th{color:var(--text2);font-weight:500;font-size:11px;text-transform:uppercase;le
     <!-- Customers -->
     <div class="panel" id="panel-customers">
       <div class="card">
-        <h3>All Customers <button class="btn btn-ghost btn-sm" onclick="openInNewWindow()">↗ Open in new window</button></h3>
+        <h3>Customers <span class="muted" id="cust-count" style="font-weight:400;font-size:13px;margin-left:6px"></span></h3>
         <input id="cust-search" placeholder="Search by name or phone…" oninput="renderCustomersPanel()" style="margin-bottom:14px" />
         <div class="cust-list-grid">
           <div id="cust-list-side"></div>
-          <div id="cust-detail-side" class="card" style="margin:0;background:var(--bg3)"><div class="empty">Select a customer to see their transactions.</div></div>
+          <div id="cust-detail-side" class="card" style="margin:0;background:var(--bg3)"><div class="empty" style="padding:60px 20px"><div style="font-size:48px;margin-bottom:12px;opacity:.5">👥</div><div style="font-size:15px;color:var(--text2);margin-bottom:4px">No customer selected</div><div style="font-size:12px;color:var(--text3)">Choose a customer from the list to view their transactions and rewards.</div></div></div>
         </div>
       </div>
     </div>
@@ -450,6 +527,10 @@ th{color:var(--text2);font-weight:500;font-size:11px;text-transform:uppercase;le
       <div class="bars-grid">
         <div class="card"><h3>Revenue by Item</h3><div id="rev-bars"></div></div>
         <div class="card"><h3>Units Sold by Item</h3><div id="units-bars"></div></div>
+      </div>
+      <div class="bars-grid">
+        <div class="card"><h3>👤 Cashier Performance</h3><div id="cashier-bars"></div></div>
+        <div class="card"><h3>📍 Store Performance</h3><div id="store-bars"></div></div>
       </div>
       <div class="card">
         <h3>CRM Ledger <button class="btn btn-ghost btn-sm" onclick="exportTxCSV()">↓ Export Transactions</button></h3>
@@ -504,21 +585,32 @@ th{color:var(--text2);font-weight:500;font-size:11px;text-transform:uppercase;le
           <div class="field"><label>Password</label><input id="set-pass" type="password" placeholder="unchanged" /></div>
           <button class="btn btn-primary btn-sm" onclick="saveCreds()">Save Credentials</button>
         </div>
+        <div class="card" style="grid-column:1/-1">
+          <h3>Cashier Accounts <button class="btn btn-primary btn-sm" onclick="openCashierEditor()">+ Add Cashier</button></h3>
+          <div class="muted" style="margin-bottom:12px">Add cashiers so each can log in with their own credentials. Their sales and store location are tracked separately on the Owner Dashboard.</div>
+          <div id="cashier-list"></div>
+        </div>
         <div class="card">
           <h3>Campaign</h3>
           <div style="margin:10px 0"><button class="toggle" id="set-dp" onclick="toggleDP()">Double Points Weekend</button></div>
           <div class="muted">When enabled, all transactions earn 2× loyalty points. Great for promo weekends.</div>
         </div>
         <div class="card" style="grid-column:1/-1">
-          <h3>WhatsApp (Ultramsg)</h3>
-          <div class="muted" style="margin-bottom:12px">Connect your <a href="https://ultramsg.com" target="_blank">Ultramsg.com</a> instance to send real WhatsApp messages to customers automatically after every sale.</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-            <div class="field"><label>Instance ID <span class="muted">(e.g. instance12345)</span></label><input id="set-um-inst" oninput="setUmInst()" placeholder="instance12345"/></div>
+          <h3>WhatsApp Auto-Send (Ultramsg)</h3>
+          <div class="muted" style="margin-bottom:12px">Connect your <a href="https://ultramsg.com" target="_blank">Ultramsg.com</a> instance to automatically send WhatsApp messages to customers after every sale.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="field"><label>Instance ID</label><input id="set-um-inst" oninput="setUmInst()" placeholder="instance12345"/></div>
             <div class="field"><label>API Token</label><input id="set-um-tok" type="password" oninput="setUmTok()" placeholder="your ultramsg token"/></div>
           </div>
           <div style="margin:6px 0"><button class="toggle" id="set-um-en" onclick="toggleUm()">Auto-send via Ultramsg</button></div>
-          <div class="muted">When enabled, every sale triggers a real WhatsApp message via Ultramsg. The popup at the bottom-right shows the live conversation. When disabled, the popup is preview-only.</div>
+          <div class="muted">When enabled, every sale triggers a real WhatsApp message. Disabled = preview only.</div>
           <div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="testUltramsg()">Send Test Message</button></div>
+        </div>
+        <div class="card" style="grid-column:1/-1">
+          <h3>☁ Cloud Sync (Google Sheets)</h3>
+          <div class="muted">Owner, cashier, customer, and sales data sync automatically to your online Google Sheet so nothing is lost when the app is refreshed or used on another device.</div>
+          <div id="sync-status" class="muted" style="margin-top:8px;font-weight:600">Idle</div>
+          <div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="manualSyncPull()">↓ Pull from Sheet</button> <button class="btn btn-ghost btn-sm" onclick="manualSyncPush()">↑ Push to Sheet</button></div>
         </div>
         <div class="card" style="border-color:#fecaca">
           <h3 style="color:#b91c1c">Danger Zone</h3>
@@ -535,10 +627,10 @@ th{color:var(--text2);font-weight:500;font-size:11px;text-transform:uppercase;le
 
 <script>
 /* ===== Data layer ===== */
-const KEY='loyaltyos_v4';
+const KEY='loyaltyos_v5';
 const CURRENCY='د.إ';
 const DEFAULT_DB={
-  customers:[], transactions:[], txItems:[], campaigns:[],
+  customers:[], transactions:[], txItems:[], campaigns:[], cashiers:[],
   doublePoints:false,
   settings:{
     shopName:'Aurora Boutique',
@@ -548,18 +640,56 @@ const DEFAULT_DB={
     bemail:'',
     appUrl:'https://loyaltyos.app',
     logo:'',
-    ultramsgInstance:'', ultramsgToken:'', ultramsgEnabled:false,
-    ownerUser:'owner', ownerPass:'loyalty123'
+    ownerUser:'owner', ownerPass:'loyalty123',
+    ultramsgInstance:'', ultramsgToken:'', ultramsgEnabled:false
   }
 };
 let DB;
+let LOGIN_ROLE='owner';
+let SESSION={role:null, cashierId:null, cashierName:null};
 function uid(){try{return crypto.randomUUID()}catch{return Date.now().toString(36)+Math.random().toString(36).slice(2)}}
-function load(){try{const r=localStorage.getItem(KEY);DB=Object.assign({},DEFAULT_DB,r?JSON.parse(r):{});DB.settings=Object.assign({},DEFAULT_DB.settings,DB.settings||{});if(!Array.isArray(DB.campaigns))DB.campaigns=[];delete DB.settings.twilio}catch{DB=structuredClone(DEFAULT_DB)}}
-function save(){localStorage.setItem(KEY,JSON.stringify(DB))}
+function load(){try{const r=localStorage.getItem(KEY);const old=localStorage.getItem('loyaltyos_v4');const raw=r||old;DB=Object.assign({},DEFAULT_DB,raw?JSON.parse(raw):{});DB.settings=Object.assign({},DEFAULT_DB.settings,DB.settings||{});if(!Array.isArray(DB.campaigns))DB.campaigns=[];if(!Array.isArray(DB.cashiers))DB.cashiers=[];delete DB.settings.twilio}catch{DB=structuredClone(DEFAULT_DB)}}
+function save(){localStorage.setItem(KEY,JSON.stringify(DB));sheetSave()}
 function escH(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function maskPhone(p){if(!p)return'';p=String(p);return p.length<6?p:p.slice(0,3)+'xxx'+p.slice(-4)}
+function normalizeUAEPhone(raw){
+  let d=String(raw||'').replace(/\D/g,'');
+  if(!d)return'';
+  if(d.startsWith('00971'))d=d.slice(2);
+  else if(d.startsWith('971'))d=d;
+  else if(d.startsWith('0'))d='971'+d.slice(1);
+  else d='971'+d;
+  return d;
+}
 function fmtAED(n){return CURRENCY+' '+(Number(n)||0).toFixed(2)}
 function todayStr(){return new Date().toDateString()}
+
+/* ===== Google Sheets sync (Apps Script web app) ===== */
+const SHEETS_URL='https://script.google.com/macros/s/AKfycbwhYJQ8GC4K8U-nk_s1CtE_gKy3xWlYEe9FWQw4QutSQV58_EtS8MHAJJGaIlfvzsfeAA/exec';
+let _syncTimer=null, _syncing=false;
+async function sheetLoad(){
+  if(!SHEETS_URL)return null;
+  try{
+    const r=await fetch(SHEETS_URL+'?action=load&t='+Date.now(),{method:'GET'});
+    if(!r.ok)return null;
+    const txt=await r.text();
+    if(!txt||txt[0]!=='{')return null;
+    const j=JSON.parse(txt);
+    return j&&j.db?j.db:(j.customers||j.cashiers?j:null);
+  }catch(e){console.warn('sheetLoad failed',e);return null}
+}
+function sheetSave(){
+  if(!SHEETS_URL)return;
+  clearTimeout(_syncTimer);
+  _syncTimer=setTimeout(async()=>{
+    if(_syncing)return;_syncing=true;
+    try{
+      await fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',db:DB})});
+      const s=document.getElementById('sync-status');if(s){s.textContent='☁ Synced '+new Date().toLocaleTimeString();s.style.color='var(--green)'}
+    }catch(e){console.warn('sheetSave failed',e);const s=document.getElementById('sync-status');if(s){s.textContent='⚠ Sync failed (offline)';s.style.color='var(--red)'}}
+    finally{_syncing=false}
+  },800);
+}
 
 /* ===== Tiers / points / achievements ===== */
 const TIERS=['Bronze','Silver','Gold','Platinum'];
@@ -593,14 +723,25 @@ function achievementsFor(c){return[
 /* ===== Screen / panel routing ===== */
 function showScreen(s){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));document.getElementById('screen-'+s).classList.add('active');window.scrollTo(0,0);applyBranding()}
 function showPanel(p){
+  // Gate owner-only panels for employees
+  const ownerOnly=['dashboard','analytics','settings'];
+  if(SESSION.role==='employee' && ownerOnly.includes(p)) p='pos';
   document.querySelectorAll('.panel').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(e=>e.classList.toggle('active',e.dataset.panel===p));
-  document.getElementById('panel-'+p).classList.add('active');
+  const el=document.getElementById('panel-'+p); if(el)el.classList.add('active');
+  if(p==='dashboard')renderOwnerDashboard();
   if(p==='analytics')renderAnalytics();
   if(p==='leaderboard')renderLeaderboard();
   if(p==='settings')renderSettings();
   if(p==='campaigns')renderCampaigns();
   if(p==='customers')renderCustomersPanel();
+  if(p==='pos')renderPOS();
+}
+function applyRoleVisibility(){
+  const isOwner=SESSION.role==='owner';
+  document.querySelectorAll('.role-owner').forEach(el=>el.style.display=isOwner?'':'none');
+  const nc=document.getElementById('nav-cashier');
+  if(nc)nc.textContent=SESSION.cashierName?`👤 ${SESSION.cashierName}`:(isOwner?'👑 Owner':'');
 }
 
 /* ===== Branding (logo + name) ===== */
@@ -618,20 +759,31 @@ function applyBranding(){
 }
 
 /* ===== Auth ===== */
+function setLoginRole(r){
+  LOGIN_ROLE=r;
+  document.querySelectorAll('#role-tabs .role-tab').forEach(el=>el.classList.toggle('active',el.dataset.role===r));
+  document.getElementById('login-title').textContent=r==='owner'?'Owner Sign In':'Cashier Sign In';
+  document.getElementById('login-err').innerHTML='';
+}
 function doLogin(){
   const u=document.getElementById('li-user').value.trim(), p=document.getElementById('li-pass').value;
   const err=document.getElementById('login-err');
-  if(u===DB.settings.ownerUser&&p===DB.settings.ownerPass){
-    err.innerHTML='';
-    document.getElementById('li-pass').value='';
-    showScreen('app');
-    showPanel('pos');
-    renderPOS();
-  } else {
-    err.innerHTML='<div class="err">Invalid username or password.</div>';
-  }
+  let ok=false, role=null, cashier=null;
+  // Try the selected role first, then fall back to the other so users don't
+  // have to remember to toggle the Owner/Cashier tab before signing in.
+  const tryOwner=()=>{ if(u===DB.settings.ownerUser&&p===DB.settings.ownerPass){ok=true;role='owner'} };
+  const tryCashier=()=>{ const c=DB.cashiers.find(x=>x.username===u&&x.password===p&&x.active!==false); if(c){ok=true;role='employee';cashier=c} };
+  if(LOGIN_ROLE==='owner'){tryOwner(); if(!ok)tryCashier()} else {tryCashier(); if(!ok)tryOwner()}
+  if(!ok){err.innerHTML='<div class="err">Invalid username or password.</div>';return}
+  err.innerHTML='';
+  document.getElementById('li-user').value=''; document.getElementById('li-pass').value='';
+  SESSION={role, cashierId:cashier?.id||null, cashierName:cashier?.name||null};
+  sessionStorage.setItem('los_auth',JSON.stringify(SESSION));
+  showScreen('app');
+  applyRoleVisibility();
+  showPanel(role==='owner'?'dashboard':'pos');
 }
-function logout(){showScreen('login')}
+function logout(){sessionStorage.removeItem('los_auth');SESSION={role:null,cashierId:null,cashierName:null};showScreen('login');setLoginRole('owner')}
 
 /* ===== Customer portal OTP ===== */
 let otpCode=null, otpExp=0, otpPhone=null;
@@ -643,9 +795,9 @@ function resetCustomer(){
   document.getElementById('otp-err').innerHTML='';
 }
 function custSendOtp(){
-  const phone=document.getElementById('cust-phone').value.replace(/\D/g,'');
+  const phone=normalizeUAEPhone(document.getElementById('cust-phone').value);
   const err=document.getElementById('cust-err');
-  if(phone.length<7||phone.length>15){err.innerHTML='<div class="err">Enter a valid phone (7-15 digits)</div>';return}
+  if(phone.length<11||phone.length>13){err.innerHTML='<div class="err">Enter a valid UAE number (e.g. 501234567)</div>';return}
   const c=DB.customers.find(x=>x.phone===phone);
   if(!c){err.innerHTML='<div class="err">No record found. Visit us in-store to register!</div>';return}
   err.innerHTML='';
@@ -748,20 +900,21 @@ function renderPOS(){
 }
 document.addEventListener('input',e=>{
   if(e.target.id==='pos-phone'){
-    const v=e.target.value.replace(/\D/g,'');e.target.value=v;
+    const raw=e.target.value.replace(/\D/g,'').slice(0,10);e.target.value=raw;
+    const v=normalizeUAEPhone(raw);
     const errEl=document.getElementById('pos-phone-err');
     const box=document.getElementById('pos-customer');
     const rWrap=document.getElementById('redeem-wrap');
     const cWrap=document.getElementById('camp-redeem-wrap');
     redeemPoints=0;redeemCampaign=null;
-    if(!v){errEl.innerHTML='';box.innerHTML='';rWrap.innerHTML='';cWrap.innerHTML='';foundCustomer=null;updateTotal();return}
-    if(v.length<7||v.length>15){errEl.innerHTML='<div class="input-err">Phone must be 7-15 digits</div>';box.innerHTML='';rWrap.innerHTML='';cWrap.innerHTML='';foundCustomer=null;updateTotal();return}
+    if(!raw){errEl.innerHTML='';box.innerHTML='';rWrap.innerHTML='';cWrap.innerHTML='';foundCustomer=null;updateTotal();return}
+    if(raw.length<8){errEl.innerHTML='<div class="input-err">Enter at least 8 digits (e.g. 501234567)</div>';box.innerHTML='';rWrap.innerHTML='';cWrap.innerHTML='';foundCustomer=null;updateTotal();return}
     errEl.innerHTML='';
     const c=DB.customers.find(x=>x.phone===v);
     if(c){foundCustomer=c;renderFoundCustomer(c);renderRedeem(c);renderCampaignRedeem(c)}
     else{
       foundCustomer={phone:v,_new:true,address:''};
-      box.innerHTML=`<div class="found-row"><div class="who"><div class="nm">New customer</div><div class="ph">${escH(v)}</div></div>
+      box.innerHTML=`<div class="found-row"><div class="who"><div class="nm">New customer</div><div class="ph">+${escH(v)}</div></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;flex:1;min-width:200px">
           <input id="new-name" placeholder="Customer name" />
           <input id="new-ref" placeholder="Referred by (phone, optional)" inputmode="numeric" />
@@ -776,12 +929,24 @@ document.addEventListener('input',e=>{
 function renderFoundCustomer(c){
   const isBday=isWithin7Days(c.dob)||isWithin7Days(c.anniversary);
   const bdayMsg=isWithin7Days(c.dob)?'🎂 Birthday this week!':isWithin7Days(c.anniversary)?'💝 Anniversary this week!':'';
+  // Find the nearest active campaign reward this customer is approaching
+  const active=DB.campaigns.filter(cm=>cm.active!==false).sort((a,b)=>a.pointsRequired-b.pointsRequired);
+  let awayHtml='';
+  const reached=active.find(cm=>c.points_balance>=cm.pointsRequired);
+  const upcoming=active.find(cm=>c.points_balance<cm.pointsRequired);
+  if(reached){
+    awayHtml=`<div class="camp-away"><div class="ca-icon">🎁</div><div class="ca-body">Eligible to redeem <b>${escH(reached.productName)}</b> right now! (${reached.pointsRequired} pts needed)</div></div>`;
+  } else if(upcoming){
+    const away=upcoming.pointsRequired-c.points_balance;
+    awayHtml=`<div class="camp-away"><div class="ca-icon">⭐</div><div class="ca-body">Only <b>${away} points</b> away from a free <b>${escH(upcoming.productName)}</b>! <button class="btn btn-gold btn-sm" style="margin-left:8px" onclick="shareCampaignTeaser('${upcoming.id}','${c.id}')">📤 Tell them</button></div></div>`;
+  }
   document.getElementById('pos-customer').innerHTML=`
     <div class="found-row">
       <div class="who"><div class="nm">${escH(c.name)} <span class="tier-badge tier-${c.current_tier}">${TIER_ICON[c.current_tier]} ${c.current_tier}</span></div><div class="ph">${escH(c.phone)}</div></div>
       <div class="mini"><span>Visits <b>${c.visit_count}</b></span><span>LTV <b>${fmtAED(c.total_spent)}</b></span><span>Points <b>${c.points_balance}</b></span></div>
     </div>
-    ${c.points_balance>=500?'<div class="alert-gold">💡 Customer has 500+ points — offer redemption!</div>':''}
+    ${awayHtml}
+    ${c.points_balance>=500&&!reached?'<div class="alert-gold">💡 Customer has 500+ points — offer redemption!</div>':''}
     ${isBday?`<div class="bday-banner">${bdayMsg} (+50 bonus points auto-applied)</div>`:''}
     ${addressDiscloseHTML('exist', c.address||'')}`;
   wireAddressDisclose('exist', addr=>{c.address=addr;save()});
@@ -854,7 +1019,7 @@ function openScanner(){
       closeScanner();
       if(!phone){alert('No phone number found in QR.');return}
       const inp=document.getElementById('pos-phone');
-      if(inp){inp.value=phone;inp.dispatchEvent(new Event('input',{bubbles:true}));inp.focus()}
+      if(inp){const local=phone.startsWith('971')?phone.slice(3):(phone.startsWith('0')?phone.slice(1):phone);inp.value=local.slice(0,10);inp.dispatchEvent(new Event('input',{bubbles:true}));inp.focus()}
     },
     _err=>{}
   ).catch(e=>{document.getElementById('qr-status').innerHTML='<span style="color:var(--red)">Camera error: '+escH(e.message||e)+'</span>'});
@@ -931,7 +1096,7 @@ function completeSale(){
     if(!nm){alert('Enter the new customer name.');return}
     c={id:uid(),phone:foundCustomer.phone,name:nm,points_balance:0,total_spent:0,visit_count:0,current_tier:'Bronze',created_at:new Date().toISOString(),notes:'',dob:'',anniversary:'',address:foundCustomer.address||''};
     DB.customers.push(c);isNew=true;
-    const refPh=(document.getElementById('new-ref')?.value||'').replace(/\D/g,'');
+    const refPh=normalizeUAEPhone(document.getElementById('new-ref')?.value||'');
     if(refPh){const ref=DB.customers.find(x=>x.phone===refPh);if(ref){ref.points_balance=Math.round((ref.points_balance+25)*10)/10;c._refBy=ref.name}}
   } else { c=DB.customers.find(x=>x.id===foundCustomer.id) }
 
@@ -956,7 +1121,8 @@ function completeSale(){
   c.current_tier=computeTier(c);
   const tierUp=TIERS.indexOf(c.current_tier)>TIERS.indexOf(oldTier);
 
-  const tx={id:uid(),customer_id:c.id,total_amount:total,points_awarded:pts+bonusPts,points_redeemed:redeemPoints,campaign_points:campPts,campaign_id:redeemCampaign?.id||null,campaign_reward:redeemCampaign?.productName||null,tier_at_sale:c.current_tier,created_at:new Date().toISOString()};
+  const cashier=DB.cashiers.find(x=>x.id===SESSION.cashierId);
+  const tx={id:uid(),customer_id:c.id,total_amount:total,points_awarded:pts+bonusPts,points_redeemed:redeemPoints,campaign_points:campPts,campaign_id:redeemCampaign?.id||null,campaign_reward:redeemCampaign?.productName||null,tier_at_sale:c.current_tier,cashier_id:SESSION.cashierId||null,cashier_name:SESSION.cashierName||(SESSION.role==='owner'?'Owner':''),store_location:cashier?.storeLocation||DB.settings.address||'',created_at:new Date().toISOString()};
   DB.transactions.push(tx);
   itemRows.forEach(r=>{if(r.name.trim())DB.txItems.push({id:uid(),transaction_id:tx.id,item_name:r.name,quantity:Number(r.qty),price:Number(r.price)})});
   if(freeItem)DB.txItems.push({id:uid(),transaction_id:tx.id,item_name:freeItem.name,quantity:1,price:0});
@@ -982,98 +1148,69 @@ function renderRecent(){
 
 /* Share popup (replaces Twilio WhatsApp) */
 function buildSaleMessage(c,total,pts){
-  // Format requested by user
-  return `Hello ${c.name} Thanks for shopping at ${DB.settings.shopName}. Your order total was ${CURRENCY} ${(Number(total)||0).toFixed(2)}. You've just earned ${pts} points! 🌟 Your status is now ${c.current_tier}. Track your rewards here: ${DB.settings.appUrl||''}`;
+  return `Hello ${c.name} Thanks for shopping at ${DB.settings.shopName}. Your order total was ${CURRENCY} ${(Number(total)||0).toFixed(2)}. You've just earned ${pts} points! 🌟 Your status is now ${c.current_tier}. Track your rewards here: ${DB.settings.appUrl||''}/rewards/${c.phone}`;
 }
 function showWAPopup(c,total,pts,refBy,campaign){
-  const z=document.getElementById('popup-zone');
   let msg=buildSaleMessage(c,total,pts);
   if(refBy)msg+=`\n\nYou also earned 25 bonus referral points for referring ${refBy}!`;
   if(campaign)msg=`🎁 Congratulations ${c.name}! You've just redeemed your loyalty reward: ${campaign.productName}. Enjoy it on us! — ${DB.settings.shopName}`;
-  showSharePopup({title:DB.settings.shopName,phone:c.phone,name:c.name,message:msg});
+  showSalePopup({customer:c,total,pts,message:msg,campaign});
+  // Auto-send via Ultramsg if enabled
+  sendViaUltramsg(c.phone,msg).then(ok=>{if(ok)console.log('Ultramsg sent to',c.phone)});
 }
-function showSharePopup({title,phone,name,message}){
+function showSalePopup({customer,total,pts,message,campaign}){
   const z=document.getElementById('popup-zone');
-  // Remove any existing popup so only the latest conversation shows
-  z.querySelectorAll('.share-popup').forEach(p=>p.remove());
-  const pop=document.createElement('div');pop.className='share-popup';
-  pop.dataset.msg=message; pop.dataset.phone=phone||''; pop.dataset.name=name||'';
-  const logo=DB.settings.logo;
-  const av=logo?`<img src="${logo}">`:'💬';
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  pop.innerHTML=`
-    <div class="hdr">
-      <div class="av">${av}</div>
-      <div class="who"><div class="nm">${escH(name||phone||'Customer')}</div><div class="st" data-st>${phone?'+'+escH(phone):'online'}</div></div>
-      <button class="x" onclick="this.closest('.share-popup').remove()">×</button>
-    </div>
-    <div class="chat" data-chat>
-      <div class="typing" data-typing><span></span><span></span><span></span></div>
-    </div>
-    <div class="status-row" data-status>Preparing message…</div>
-    <div class="acts">
-      <button class="btn btn-ghost btn-sm" onclick="sharePopupAction(this,'whatsapp')">Open WhatsApp</button>
-      <button class="btn btn-ghost btn-sm" onclick="sharePopupAction(this,'copy')">Copy</button>
-      <button class="btn btn-gold btn-sm" onclick="sharePopupAction(this,'resend')">↻ Resend</button>
+  const bg=document.createElement('div');bg.className='sale-modal-bg';
+  bg.addEventListener('click',e=>{if(e.target===bg)bg.remove()});
+  const tier=customer.current_tier;
+  bg.innerHTML=`
+    <div class="sale-modal">
+      <div class="sm-hero">
+        <button class="sm-close" onclick="this.closest('.sale-modal-bg').remove()">×</button>
+        <div class="check">✓</div>
+        <h2>${campaign?'Reward Redeemed!':'Payment Successful'}</h2>
+        <p>${campaign?escH(campaign.productName)+' is on us 🎁':'Thanks for shopping with us'}</p>
+      </div>
+      <div class="sm-summary">
+        <div class="sm-stat"><div class="lbl">Total</div><div class="val">${fmtAED(total)}</div></div>
+        <div class="sm-stat gold"><div class="lbl">Points Earned</div><div class="val">+${pts} ⭐</div></div>
+        <div class="sm-stat full"><div class="lbl">New Status</div><div class="val">${TIER_ICON[tier]||''} ${escH(tier)} · ${customer.points_balance} pts balance</div></div>
+      </div>
+      <div class="sm-cust">
+        <div><div class="nm">${escH(customer.name)}</div><div class="ph">${escH(customer.phone)}</div></div>
+        <div class="points-pill" style="font-size:12px">Visit #${customer.visit_count}</div>
+      </div>
+      <div class="sm-wa">
+        <div class="sm-wa-label"><span class="dot">✓</span> WhatsApp message preview</div>
+        <div class="wa-bubble">${escH(message)}</div>
+      </div>
+      <div class="sm-acts">
+        <button class="b-share" onclick="salePopupAction(this,'share')">📤 Share</button>
+        <button class="b-copy" onclick="salePopupAction(this,'copy')">📋 Copy</button>
+      </div>
     </div>`;
-  z.appendChild(pop);
-  // Simulate typing then deliver the bubble
-  setTimeout(()=>{
-    const chat=pop.querySelector('[data-chat]');
-    const typing=pop.querySelector('[data-typing]');
-    if(typing)typing.remove();
-    const bub=document.createElement('div');bub.className='bubble';
-    bub.innerHTML=`${escH(message)}<span class="time">${now} <span class="ticks tick-sent" data-ticks>✓</span></span>`;
-    chat.appendChild(bub);
-    chat.scrollTop=chat.scrollHeight;
-    sendViaUltramsg(pop,phone,message);
-  },900);
-  setTimeout(()=>{if(pop.isConnected)pop.remove()},45000);
+  const modal=bg.querySelector('.sale-modal');
+  modal.dataset.msg=message; modal.dataset.phone=(customer.phone||'').replace(/\D/g,''); modal.dataset.name=customer.name||'';
+  z.appendChild(bg);
 }
-async function sendViaUltramsg(pop,phone,message){
-  const s=DB.settings;
-  const status=pop.querySelector('[data-status]');
-  const ticks=pop.querySelector('[data-ticks]');
-  const cleanPhone=String(phone||'').replace(/\D/g,'');
-  if(!s.ultramsgEnabled||!s.ultramsgInstance||!s.ultramsgToken){
-    status.textContent='Preview mode · Enable Ultramsg in Settings to send for real';
-    return;
-  }
-  if(!cleanPhone){status.textContent='⚠ No phone number';return}
-  status.textContent='Sending via Ultramsg…';
-  try{
-    const url=`https://api.ultramsg.com/${encodeURIComponent(s.ultramsgInstance)}/messages/chat`;
-    const body=new URLSearchParams({token:s.ultramsgToken,to:cleanPhone,body:message});
-    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
-    const data=await res.json().catch(()=>({}));
-    if(res.ok&&(data.sent||data.id||data.message==='ok')){
-      if(ticks){ticks.textContent='✓✓';ticks.classList.remove('tick-sent');ticks.classList.add('tick-delivered')}
-      status.textContent='✓ Delivered via WhatsApp';
-      setTimeout(()=>{if(ticks){ticks.classList.remove('tick-delivered');ticks.classList.add('tick-read')}status.textContent='✓✓ Read';},2500);
-    }else{
-      status.textContent='⚠ Send failed: '+(data.error||data.message||res.status);
-    }
-  }catch(e){
-    status.textContent='⚠ Network error: '+(e.message||e);
-  }
+// Back-compat for other callers
+function showSharePopup({phone,name,message}){
+  showSalePopup({customer:{name,phone,current_tier:'Bronze',points_balance:0,visit_count:0},total:0,pts:0,message});
 }
-async function sharePopupAction(btn,kind){
-  const pop=btn.closest('.share-popup');
-  const msg=pop.dataset.msg||'';
-  const phone=(pop.dataset.phone||'').replace(/\D/g,'');
+async function salePopupAction(btn,kind){
+  const modal=btn.closest('.sale-modal');
+  const msg=modal.dataset.msg||'';
+  const phone=(modal.dataset.phone||'').replace(/\D/g,'');
   if(kind==='copy'){
-    try{await navigator.clipboard.writeText(msg);btn.textContent='✓ Copied'}
+    try{await navigator.clipboard.writeText(msg);btn.classList.add('ok');btn.innerHTML='✓ Copied!';setTimeout(()=>{btn.classList.remove('ok');btn.innerHTML='📋 Copy'},2000)}
     catch{alert('Copy failed. Select & copy manually.')}
     return;
   }
-  if(kind==='whatsapp'){
-    const url=`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-    window.open(url,'_blank');
-    return;
-  }
-  if(kind==='resend'){
-    await sendViaUltramsg(pop,phone,msg);
-    return;
+  if(kind==='share'){
+    if(navigator.share){
+      try{await navigator.share({title:'Loyalty Reward',text:msg});return}catch{}
+    }
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
   }
 }
 
@@ -1118,7 +1255,7 @@ function openReceipt(txId){
       <div style="text-align:center;margin-top:16px"><div class="qr-box" id="rcpt-qr"></div><div class="muted" style="margin-top:6px">Scan to view rewards</div></div>
       <button class="btn btn-gold print-btn" style="margin-top:16px" onclick="window.print()">Print Receipt</button>
     </div></div>`;
-  if(c)new QRCode(document.getElementById('rcpt-qr'),{text:`${DB.settings.appUrl}`,width:120,height:120});
+  if(c)new QRCode(document.getElementById('rcpt-qr'),{text:`${DB.settings.appUrl}/rewards/${c.phone}`,width:120,height:120});
 }
 
 /* ===== Campaigns ===== */
@@ -1127,10 +1264,8 @@ function renderCampaigns(){
   if(!DB.campaigns.length){el.innerHTML='<div class="empty">No campaigns yet. Click "+ New Campaign" to create your first reward.</div>';return}
   el.innerHTML=DB.campaigns.map(cm=>{
     const eligible=DB.customers.filter(c=>c.points_balance>=cm.pointsRequired).length;
-    const close=DB.customers.filter(c=>{
-      const min=Math.max(0,cm.pointsRequired-(cm.teaseThreshold||100));
-      return c.points_balance>=min && c.points_balance<cm.pointsRequired;
-    }).length;
+    const thr=cm.teaseThreshold||0;
+    const close=DB.customers.filter(c=>c.points_balance>=thr && c.points_balance<cm.pointsRequired).length;
     return `<div class="camp-card">
       <div class="camp-img">${cm.image?`<img src="${cm.image}" alt="">`:'📦'}</div>
       <div class="camp-body">
@@ -1166,9 +1301,9 @@ function openCampaignEditor(id){
       <div class="field"><label>Product Description</label><textarea id="cm-desc" rows="3" placeholder="Short description shown to customer in WhatsApp">${escH(cm.description)}</textarea></div>
       <div class="set-grid" style="grid-template-columns:1fr 1fr;gap:12px">
         <div class="field"><label>Points Required to Redeem</label><input id="cm-pts" type="number" min="1" value="${cm.pointsRequired}"></div>
-        <div class="field"><label>Teaser Window (points)</label><input id="cm-tease" type="number" min="0" value="${cm.teaseThreshold||100}"></div>
+        <div class="field"><label>Teaser Threshold (min points)</label><input id="cm-tease" type="number" min="0" value="${cm.teaseThreshold||100}"></div>
       </div>
-      <div class="muted" style="margin-top:-6px;margin-bottom:12px">Customers within "teaser window" points of the goal will receive the "X points away" WhatsApp message.</div>
+      <div class="muted" style="margin-top:-6px;margin-bottom:12px">Customers with <b>at least this many points</b> (but not yet eligible) will receive the "close to winning" WhatsApp teaser. Customers who already have enough points get the "ready to redeem" message.</div>
       <div class="set-grid" style="grid-template-columns:1fr 1fr;gap:12px">
         <div class="field"><label>Target Tier (optional)</label>
           <select id="cm-tier"><option value="">Any tier</option>${TIERS.map(t=>`<option value="${t}" ${cm.targetTier===t?'selected':''}>${t}+</option>`).join('')}</select>
@@ -1215,24 +1350,81 @@ function saveCampaign(id,isNew){
   save();document.querySelector('.modal-overlay')?.remove();renderCampaigns();
 }
 function campaignTargets(cm){
+  // "close" = customers who have reached the teaser threshold but aren't yet eligible
+  const thr=cm.teaseThreshold||0;
   return DB.customers.filter(c=>{
     if(cm.targetTier && TIERS.indexOf(c.current_tier)<TIERS.indexOf(cm.targetTier))return false;
     if(c.points_balance<(cm.targetMinPoints||0))return false;
-    if(c.points_balance>=cm.pointsRequired)return false; // already eligible, no teaser
-    if(c.points_balance<cm.pointsRequired-(cm.teaseThreshold||100))return false;
+    if(c.points_balance>=cm.pointsRequired)return false; // already eligible
+    if(c.points_balance<thr)return false;
     return true;
   });
 }
+function campaignEligibles(cm){
+  return DB.customers.filter(c=>{
+    if(cm.targetTier && TIERS.indexOf(c.current_tier)<TIERS.indexOf(cm.targetTier))return false;
+    return c.points_balance>=cm.pointsRequired;
+  });
+}
+function buildReadyMessage(cm,c){
+  return `🎁 Great news ${c.name}! You've earned enough points to claim a FREE ${cm.productName} at ${DB.settings.shopName}!\n\nYou have ${c.points_balance} points — that's enough to redeem this reward.\n${cm.description?'\n'+cm.description+'\n':''}\nDrop by anytime to collect it. ${DB.settings.appUrl||''}/rewards/${c.phone}`;
+}
+function buildCloseMessage(cm,c){
+  const away=Math.max(0,cm.pointsRequired-c.points_balance);
+  return `Hi ${c.name}! 🌟 You're only ${away} points away from getting a FREE ${cm.productName} at ${DB.settings.shopName}!\n\nYou currently have ${c.points_balance} points. Just ${away} more and the reward is yours.\n${cm.description?'\n'+cm.description+'\n':''}\nVisit us soon to earn more. ${DB.settings.appUrl||''}/rewards/${c.phone}`;
+}
+function buildTeaserMessage(cm,c){
+  return c.points_balance>=cm.pointsRequired?buildReadyMessage(cm,c):buildCloseMessage(cm,c);
+}
+function shareCampaignTeaser(campId, custId){
+  const cm=DB.campaigns.find(x=>x.id===campId); const c=DB.customers.find(x=>x.id===custId);
+  if(!cm||!c)return;
+  const msg=buildTeaserMessage(cm,c);
+  showSalePopup({customer:c,total:0,pts:0,message:msg,campaign:cm});
+}
 function sendCampaignTeasers(id){
   const cm=DB.campaigns.find(x=>x.id===id);if(!cm)return;
-  const targets=campaignTargets(cm);
-  if(!targets.length){alert('No customers currently in the teaser window for this campaign.');return}
-  if(!confirm(`Open share popup for ${targets.length} customer(s) for "${cm.name}"?`))return;
-  for(const c of targets){
+  const eligible=campaignEligibles(cm);
+  const close=campaignTargets(cm);
+  if(!eligible.length && !close.length){alert('No customers match this campaign yet. Lower the teaser threshold or wait for more points to accrue.');return}
+  const row=(c,kind)=>{
+    const initials=(c.name||'?').split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase();
     const away=cm.pointsRequired-c.points_balance;
-    const msg=`Hi ${c.name}! 🌟 You're only ${away} points away from getting a FREE ${cm.productName} at ${DB.settings.shopName}!\n\n${cm.description||''}\n\nVisit us soon to redeem. ${DB.settings.appUrl||''}`;
-    showSharePopup({title:DB.settings.shopName,phone:c.phone,name:c.name,message:msg});
-  }
+    return `<div class="target-row">
+      <div class="tr-av">${escH(initials)}</div>
+      <div class="tr-main">
+        <div class="tr-nm">${escH(c.name)}</div>
+        <div class="tr-meta">${escH(c.phone)} · ${c.points_balance} pts</div>
+      </div>
+      <div class="tr-away">${kind==='ready'?'✓ Ready':away+' away'}</div>
+      <button class="btn btn-gold btn-sm" onclick="shareCampaignTeaser('${cm.id}','${c.id}')">📤 Share</button>
+    </div>`;
+  };
+  const z=document.getElementById('modal-zone');
+  z.innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)this.remove()">
+    <div class="modal" style="max-width:600px">
+      <button class="x" onclick="this.closest('.modal-overlay').remove()">×</button>
+      <h2 style="margin-bottom:4px">📣 Campaign Outreach</h2>
+      <div class="muted" style="margin-bottom:12px"><b>${escH(cm.name)}</b> — reward: ${escH(cm.productName)} · ${cm.pointsRequired} pts to redeem</div>
+
+      <div style="margin:14px 0 6px;display:flex;align-items:center;gap:8px">
+        <span class="points-pill" style="background:#dcfce7;color:#065f46;border-color:#86efac">🎁 Ready to Redeem · ${eligible.length}</span>
+        <span class="muted" style="font-size:12px">Customers who can claim the reward now</span>
+      </div>
+      <div class="targets-list">
+        ${eligible.length?eligible.map(c=>row(c,'ready')).join(''):'<div class="muted" style="padding:10px;font-size:13px">No customers eligible yet.</div>'}
+      </div>
+
+      <div style="margin:18px 0 6px;display:flex;align-items:center;gap:8px">
+        <span class="points-pill">⭐ Close to Winning · ${close.length}</span>
+        <span class="muted" style="font-size:12px">Customers above ${cm.teaseThreshold||0} pts but not yet eligible</span>
+      </div>
+      <div class="targets-list">
+        ${close.length?close.map(c=>row(c,'close')).join(''):'<div class="muted" style="padding:10px;font-size:13px">No customers in the teaser range.</div>'}
+      </div>
+
+      <div class="muted" style="font-size:12px;margin-top:12px">Each group gets its own tailored WhatsApp message. Click <b>Share</b> next to a customer to open the share dialog.</div>
+    </div></div>`;
 }
 
 /* Analytics */
@@ -1262,6 +1454,21 @@ function renderAnalytics(){
   const maxU=Math.max(1,...u8.map(r=>r[1].u));
   document.getElementById('rev-bars').innerHTML=rev8.length?rev8.map(([n,d])=>`<div class="bar-row"><div class="nm">${escH(n)}</div><div class="bar"><div style="width:${d.rev/maxR*100}%;background:linear-gradient(90deg,var(--indigo2),var(--indigo3))"></div></div><div class="v">${fmtAED(d.rev)}</div></div>`).join(''):'<div class="empty">No data yet — complete a sale.</div>';
   document.getElementById('units-bars').innerHTML=u8.length?u8.map(([n,d])=>`<div class="bar-row"><div class="nm">${escH(n)}</div><div class="bar"><div style="width:${d.u/maxU*100}%;background:linear-gradient(90deg,var(--gold2),var(--gold3))"></div></div><div class="v">${d.u}</div></div>`).join(''):'<div class="empty">No data yet.</div>';
+
+  // Cashier performance
+  const byCash={};
+  DB.transactions.forEach(t=>{const k=t.cashier_name||'Owner';byCash[k]=byCash[k]||{rev:0,tx:0,pts:0};byCash[k].rev+=t.total_amount;byCash[k].tx+=1;byCash[k].pts+=t.points_awarded||0});
+  const cashRows=Object.entries(byCash).sort((a,b)=>b[1].rev-a[1].rev).slice(0,8);
+  const maxCash=Math.max(1,...cashRows.map(r=>r[1].rev));
+  document.getElementById('cashier-bars').innerHTML=cashRows.length?cashRows.map(([n,d])=>`<div class="bar-row"><div class="nm">${escH(n)}<div class="muted" style="font-size:11px">${d.tx} sales · ${Math.round(d.pts)} pts</div></div><div class="bar"><div style="width:${d.rev/maxCash*100}%;background:linear-gradient(90deg,#6366f1,#a855f7)"></div></div><div class="v">${fmtAED(d.rev)}</div></div>`).join(''):'<div class="empty">No sales yet.</div>';
+
+  // Store performance
+  const byStore={};
+  DB.transactions.forEach(t=>{const k=t.store_location||DB.settings.address||'—';byStore[k]=byStore[k]||{rev:0,tx:0,cust:new Set()};byStore[k].rev+=t.total_amount;byStore[k].tx+=1;byStore[k].cust.add(t.customer_id)});
+  const storeRows=Object.entries(byStore).sort((a,b)=>b[1].rev-a[1].rev).slice(0,8);
+  const maxStore=Math.max(1,...storeRows.map(r=>r[1].rev));
+  document.getElementById('store-bars').innerHTML=storeRows.length?storeRows.map(([n,d])=>`<div class="bar-row"><div class="nm">${escH(n)}<div class="muted" style="font-size:11px">${d.tx} sales · ${d.cust.size} customers</div></div><div class="bar"><div style="width:${d.rev/maxStore*100}%;background:linear-gradient(90deg,#10b981,#06b6d4)"></div></div><div class="v">${fmtAED(d.rev)}</div></div>`).join(''):'<div class="empty">No sales yet.</div>';
+
   renderLedger();
 }
 function renderLedger(){
@@ -1299,8 +1506,8 @@ function editNote(cid,cell){
 function showCustQR(cid){
   const c=DB.customers.find(x=>x.id===cid);
   const z=document.getElementById('modal-zone');
-  z.innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)this.remove()"><div class="modal" style="max-width:320px;text-align:center"><button class="x" onclick="this.closest('.modal-overlay').remove()">×</button><h3>${escH(c.name)}</h3><div class="muted" style="margin-bottom:10px">${escH(c.phone)}</div><div class="qr-box" id="cust-qr"></div><div class="muted" style="margin-top:10px">${escH(DB.settings.appUrl)}</div></div></div>`;
-  new QRCode(document.getElementById('cust-qr'),{text:`${DB.settings.appUrl}`,width:200,height:200});
+  z.innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)this.remove()"><div class="modal" style="max-width:320px;text-align:center"><button class="x" onclick="this.closest('.modal-overlay').remove()">×</button><h3>${escH(c.name)}</h3><div class="muted" style="margin-bottom:10px">${escH(c.phone)}</div><div class="qr-box" id="cust-qr"></div><div class="muted" style="margin-top:10px">${escH(DB.settings.appUrl)}/rewards/${escH(c.phone)}</div></div></div>`;
+  new QRCode(document.getElementById('cust-qr'),{text:`${DB.settings.appUrl}/rewards/${c.phone}`,width:200,height:200});
 }
 
 /* Exports */
@@ -1351,14 +1558,41 @@ function renderSettings(){
   document.getElementById('set-pass').value='';
   document.getElementById('set-dp').classList.toggle('on',DB.doublePoints);
   document.getElementById('set-dp').textContent=DB.doublePoints?'🔥 Double Points: ON':'Double Points: OFF';
-  document.getElementById('set-um-inst').value=DB.settings.ultramsgInstance||'';
-  document.getElementById('set-um-tok').value=DB.settings.ultramsgToken||'';
-  const ue=document.getElementById('set-um-en');
-  ue.classList.toggle('on',!!DB.settings.ultramsgEnabled);
-  ue.textContent=DB.settings.ultramsgEnabled?'✅ Ultramsg Auto-send: ON':'Ultramsg Auto-send: OFF';
   const lp=document.getElementById('logo-preview');
   lp.innerHTML=DB.settings.logo?`<img src="${DB.settings.logo}">`:'<span>No logo</span>';
+  // Ultramsg
+  const ui=document.getElementById('set-um-inst');if(ui)ui.value=DB.settings.ultramsgInstance||'';
+  const ut=document.getElementById('set-um-tok');if(ut)ut.value=DB.settings.ultramsgToken||'';
+  const ue=document.getElementById('set-um-en');if(ue){ue.classList.toggle('on',!!DB.settings.ultramsgEnabled);ue.textContent=DB.settings.ultramsgEnabled?'✅ Ultramsg Auto-send: ON':'Ultramsg Auto-send: OFF'}
 }
+function setUmInst(){DB.settings.ultramsgInstance=document.getElementById('set-um-inst').value.trim();save()}
+function setUmTok(){DB.settings.ultramsgToken=document.getElementById('set-um-tok').value.trim();save()}
+function toggleUm(){DB.settings.ultramsgEnabled=!DB.settings.ultramsgEnabled;save();renderSettings()}
+async function sendViaUltramsg(phone,message){
+  const s=DB.settings;
+  const clean=normalizeUAEPhone(phone);
+  if(!s.ultramsgEnabled||!s.ultramsgInstance||!s.ultramsgToken||!clean)return false;
+  try{
+    const url=`https://api.ultramsg.com/${encodeURIComponent(s.ultramsgInstance)}/messages/chat`;
+    const body=new URLSearchParams({token:s.ultramsgToken,to:clean,body:message});
+    const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
+    return r.ok;
+  }catch(e){console.warn('ultramsg failed',e);return false}
+}
+async function testUltramsg(){
+  const ok=await sendViaUltramsg(DB.settings.bphone||'971500000000','Test message from '+DB.settings.shopName+' ✅');
+  alert(ok?'Test message sent via Ultramsg ✅':'Ultramsg test failed. Check Instance ID + Token + that Auto-send is ON.');
+}
+async function manualSyncPull(){
+  const s=document.getElementById('sync-status');if(s){s.textContent='⏳ Pulling…';s.style.color='var(--text2)'}
+  const remote=await sheetLoad();
+  if(!remote){if(s){s.textContent='⚠ Pull failed';s.style.color='var(--red)'}return}
+  DB=Object.assign({},DEFAULT_DB,remote);DB.settings=Object.assign({},DEFAULT_DB.settings,DB.settings||{});
+  localStorage.setItem(KEY,JSON.stringify(DB));
+  if(s){s.textContent='✓ Pulled '+new Date().toLocaleTimeString();s.style.color='var(--green)'}
+  renderSettings();renderCustomersPanel?.();renderCashierList?.();
+}
+function manualSyncPush(){sheetSave();const s=document.getElementById('sync-status');if(s){s.textContent='⏳ Pushing…';s.style.color='var(--text2)'}}
 function onLogoUpload(e){
   const f=e.target.files[0];if(!f)return;
   if(f.size>500*1024){alert('Logo too large (max ~500KB). Please use a smaller image.');return}
@@ -1373,15 +1607,6 @@ function setAddress(){DB.settings.address=document.getElementById('set-address')
 function setBPhone(){DB.settings.bphone=document.getElementById('set-bphone').value;save()}
 function setBEmail(){DB.settings.bemail=document.getElementById('set-bemail').value;save()}
 function setUrl(){DB.settings.appUrl=document.getElementById('set-url').value;save()}
-function setUmInst(){DB.settings.ultramsgInstance=document.getElementById('set-um-inst').value.trim();save()}
-function setUmTok(){DB.settings.ultramsgToken=document.getElementById('set-um-tok').value.trim();save()}
-function toggleUm(){DB.settings.ultramsgEnabled=!DB.settings.ultramsgEnabled;save();renderSettings()}
-async function testUltramsg(){
-  const phone=prompt('Enter a phone number (with country code, no +) to receive a test WhatsApp:');
-  if(!phone)return;
-  const c={name:'Test',phone:phone.replace(/\D/g,'')};
-  showSharePopup({title:DB.settings.shopName,phone:c.phone,name:c.name,message:`Hello! This is a test message from ${DB.settings.shopName} via Ultramsg ✅`});
-}
 function saveCreds(){
   const u=document.getElementById('set-user').value.trim();const p=document.getElementById('set-pass').value;
   if(u)DB.settings.ownerUser=u; if(p)DB.settings.ownerPass=p;
@@ -1397,20 +1622,30 @@ function clearAll(){if(!confirm('Permanently delete ALL customers, transactions 
 
 /* ===== Customers Panel ===== */
 let _selectedCustomerId=null;
-function openInNewWindow(){
-  const url=window.location.pathname+'?app=1#customers';
-  window.open(url,'_blank','width=1200,height=800');
-}
 function renderCustomersPanel(){
   const q=(document.getElementById('cust-search')?.value||'').toLowerCase();
   const list=[...DB.customers].sort((a,b)=>b.total_spent-a.total_spent)
     .filter(c=>!q||c.name.toLowerCase().includes(q)||c.phone.includes(q));
   const side=document.getElementById('cust-list-side');
+  const cnt=document.getElementById('cust-count');if(cnt)cnt.textContent=list.length?`(${list.length})`:'';
   if(!list.length){side.innerHTML='<div class="empty">No customers.</div>';return}
-  side.innerHTML=list.map(c=>`<div class="cust-item ${c.id===_selectedCustomerId?'active':''}" onclick="selectCustomer('${c.id}')">
-    <div><div class="nm">${escH(c.name)}</div><div class="ph">${escH(c.phone)} · ${escH(c.current_tier)}</div></div>
-    <div class="pts">${c.points_balance} pts</div>
-  </div>`).join('');
+  // Use leaderboard-style cards (lb-card) for visual parity with Leaderboard panel
+  side.innerHTML=list.map((c,i)=>{
+    const rank=i+1;
+    const medal=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':'#'+rank;
+    const isActive=c.id===_selectedCustomerId;
+    return `<div class="lb-card" style="cursor:pointer;margin-bottom:10px;${isActive?'border-color:var(--gold2);background:#fffaeb;box-shadow:0 4px 14px rgba(200,154,24,.15)':''}" onclick="selectCustomer('${c.id}')">
+      <div class="rank">${medal}</div>
+      <div class="info">
+        <div class="nm">${escH(c.name)} <span class="tier-badge tier-${c.current_tier}">${TIER_ICON[c.current_tier]} ${c.current_tier}</span></div>
+        <div class="ph">${escH(c.phone)}</div>
+      </div>
+      <div class="score">
+        <div class="n">${c.points_balance}</div>
+        <div class="b">pts · ${fmtAED(c.total_spent)}</div>
+      </div>
+    </div>`;
+  }).join('');
   if(_selectedCustomerId && !list.find(c=>c.id===_selectedCustomerId))_selectedCustomerId=null;
   if(_selectedCustomerId)renderCustomerDetail(_selectedCustomerId);
 }
@@ -1420,27 +1655,33 @@ function renderCustomerDetail(id){
   const txs=DB.transactions.filter(t=>t.customer_id===id).sort((a,b)=>b.created_at.localeCompare(a.created_at));
   const detail=document.getElementById('cust-detail-side');
   detail.style.background='#fff';
+  const initials=escH((c.name||'?').split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase());
   detail.innerHTML=`
     <div class="cust-detail-head">
-      <div>
-        <h2>${escH(c.name)} <span class="tier-badge tier-${c.current_tier}">${TIER_ICON[c.current_tier]} ${c.current_tier}</span></h2>
-        <div class="muted">${escH(c.phone)}${c.address?' · 📍 '+escH(c.address):''}</div>
+      <div class="cdh-id">
+        <div class="cdh-avatar">${initials}</div>
+        <div>
+          <h2>${escH(c.name)}</h2>
+          <div class="muted">${escH(c.phone)}${c.address?' · 📍 '+escH(c.address):''}</div>
+        </div>
       </div>
-      <div style="text-align:right">
-        <div class="points-pill" style="font-size:14px">${c.points_balance} pts</div>
-        <div class="muted" style="margin-top:4px">LTV ${fmtAED(c.total_spent)} · ${c.visit_count} visits</div>
-      </div>
+      <span class="tier-badge tier-${c.current_tier}">${TIER_ICON[c.current_tier]} ${c.current_tier}</span>
     </div>
-    <h3 style="font-size:14px;margin-bottom:10px">Transactions (${txs.length})</h3>
+    <div class="cdh-stats">
+      <div class="cdh-stat"><div class="lbl">Points</div><div class="val">${c.points_balance}</div></div>
+      <div class="cdh-stat"><div class="lbl">Lifetime</div><div class="val">${fmtAED(c.total_spent)}</div></div>
+      <div class="cdh-stat"><div class="lbl">Visits</div><div class="val">${c.visit_count}</div></div>
+    </div>
+    <h3 style="font-size:13px;margin:18px 0 10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text2)">Transactions · ${txs.length}</h3>
     ${txs.length?`<div>${txs.map(t=>`
       <div class="tx-row" onclick="openReceipt('${t.id}')">
         <div class="l">
-          <span>${new Date(t.created_at).toLocaleString()}</span>
+          <span>${new Date(t.created_at).toLocaleDateString()} · ${new Date(t.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
           <span class="date">${DB.txItems.filter(i=>i.transaction_id===t.id).map(i=>escH(i.item_name)).join(', ')||'—'}</span>
         </div>
         <div style="text-align:right">
           <div class="amt">${fmtAED(t.total_amount)}</div>
-          <div class="muted" style="font-size:11px">+${t.points_awarded} pts${t.points_redeemed?' · -'+t.points_redeemed+' redeemed':''}</div>
+          <div class="muted" style="font-size:11px">+${t.points_awarded} pts${t.points_redeemed?' · -'+t.points_redeemed:''}</div>
         </div>
       </div>`).join('')}</div>`:'<div class="empty">No transactions yet.</div>'}
   `;
@@ -1479,12 +1720,135 @@ function seed(){
   save();
 }
 
+/* ===== Owner Dashboard ===== */
+function renderOwnerDashboard(){
+  const txs=DB.transactions;
+  const today=txs.filter(t=>new Date(t.created_at).toDateString()===todayStr());
+  const rev=txs.reduce((s,t)=>s+t.total_amount,0);
+  const revToday=today.reduce((s,t)=>s+t.total_amount,0);
+  const kpis=[
+    {l:"Today's Revenue",v:fmtAED(revToday),g:1},
+    {l:"Today's Sales",v:today.length},
+    {l:'Active Cashiers',v:DB.cashiers.filter(c=>c.active!==false).length},
+    {l:'Total Revenue',v:fmtAED(rev),g:1},
+  ];
+  document.getElementById('dash-kpis').innerHTML=kpis.map(k=>`<div class="kpi"><div class="v ${k.g?'gold':''}">${k.v}</div><div class="l">${k.l}</div></div>`).join('');
+
+  // Build per-cashier rollup (include "Owner" bucket for sales by owner)
+  const buckets={};
+  txs.forEach(t=>{
+    const key=t.cashier_id||'__owner__';
+    const name=t.cashier_name||'Owner';
+    const loc=t.store_location||DB.settings.address||'—';
+    if(!buckets[key])buckets[key]={name,loc,count:0,rev:0,today:0,pts:0,last:null};
+    const b=buckets[key];
+    b.count++; b.rev+=t.total_amount; b.pts+=t.points_awarded;
+    if(new Date(t.created_at).toDateString()===todayStr())b.today++;
+    if(!b.last||t.created_at>b.last)b.last=t.created_at;
+  });
+  // Ensure every registered cashier appears, even if no sales yet
+  DB.cashiers.forEach(c=>{
+    if(!buckets[c.id])buckets[c.id]={name:c.name,loc:c.storeLocation||'—',count:0,rev:0,today:0,pts:0,last:null};
+  });
+  const list=Object.values(buckets).sort((a,b)=>b.rev-a.rev);
+  const el=document.getElementById('dash-cashiers');
+  if(!list.length){el.innerHTML='<div class="empty">No cashier activity yet. Add cashiers in Settings.</div>';return}
+  el.innerHTML=list.map(b=>{
+    const initials=(b.name||'?').split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase();
+    return `<div class="cashier-card">
+      <div class="ch-head">
+        <div class="ch-av">${escH(initials)}</div>
+        <div>
+          <div class="ch-nm">${escH(b.name)}</div>
+          <div class="ch-loc">📍 ${escH(b.loc||'—')}</div>
+        </div>
+      </div>
+      <div class="ch-stats">
+        <div class="ch-stat"><div class="v">${b.count}</div><div class="l">Sales</div></div>
+        <div class="ch-stat"><div class="v">${fmtAED(b.rev)}</div><div class="l">Revenue</div></div>
+        <div class="ch-stat"><div class="v">${b.today}</div><div class="l">Today</div></div>
+        <div class="ch-stat"><div class="v">${Math.round(b.pts)}</div><div class="l">Pts Issued</div></div>
+      </div>
+      <div class="muted" style="margin-top:10px;font-size:11px">${b.last?'Last sale: '+new Date(b.last).toLocaleString():'No sales yet'}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ===== Cashier Management ===== */
+function renderCashierList(){
+  const el=document.getElementById('cashier-list'); if(!el)return;
+  if(!DB.cashiers.length){el.innerHTML='<div class="muted">No cashiers yet. Click "+ Add Cashier" to create one.</div>';return}
+  el.innerHTML=DB.cashiers.map(c=>`<div class="cashier-row">
+    <div class="cr-main">
+      <div class="cr-nm">${escH(c.name)} ${c.active===false?'<span class="muted">(disabled)</span>':''}</div>
+      <div class="cr-meta">👤 ${escH(c.username)} · 📍 ${escH(c.storeLocation||'No location')}</div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="openCashierEditor('${c.id}')">Edit</button>
+    <button class="btn btn-ghost btn-sm" onclick="toggleCashier('${c.id}')">${c.active===false?'Enable':'Disable'}</button>
+    <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="deleteCashier('${c.id}')">×</button>
+  </div>`).join('');
+}
+function openCashierEditor(id){
+  const c=id?DB.cashiers.find(x=>x.id===id):{id:uid(),name:'',username:'',password:'',storeLocation:'',active:true};
+  const isNew=!id;
+  const z=document.getElementById('modal-zone');
+  z.innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)this.remove()">
+    <div class="modal" style="max-width:460px">
+      <button class="x" onclick="this.closest('.modal-overlay').remove()">×</button>
+      <h2 style="margin-bottom:14px">${isNew?'Add Cashier':'Edit Cashier'}</h2>
+      <div class="field"><label>Full Name</label><input id="ce-name" value="${escH(c.name)}" placeholder="e.g. Layla Hassan"></div>
+      <div class="field"><label>Username</label><input id="ce-user" value="${escH(c.username)}" placeholder="e.g. layla"></div>
+      <div class="field"><label>Password</label><input id="ce-pass" type="text" value="${escH(c.password||'')}" placeholder="set password"></div>
+      <div class="field"><label>Store Location</label><input id="ce-loc" value="${escH(c.storeLocation||'')}" placeholder="e.g. Dubai Marina Branch"></div>
+      <div style="display:flex;gap:8px;margin-top:6px"><button class="btn btn-primary btn-sm" onclick="saveCashier('${c.id}',${isNew})">Save</button><button class="btn btn-ghost btn-sm" onclick="this.closest('.modal-overlay').remove()">Cancel</button></div>
+    </div></div>`;
+}
+function saveCashier(id,isNew){
+  const c={id,name:document.getElementById('ce-name').value.trim(),username:document.getElementById('ce-user').value.trim(),password:document.getElementById('ce-pass').value,storeLocation:document.getElementById('ce-loc').value.trim(),active:true};
+  if(!c.name||!c.username||!c.password){alert('Name, username, and password are required.');return}
+  if(DB.cashiers.find(x=>x.username===c.username&&x.id!==id)){alert('Username already in use.');return}
+  if(isNew){DB.cashiers.push(c)}else{const i=DB.cashiers.findIndex(x=>x.id===id);if(i>-1)DB.cashiers[i]={...DB.cashiers[i],...c}}
+  save();document.querySelector('.modal-overlay')?.remove();renderCashierList();
+}
+function toggleCashier(id){const c=DB.cashiers.find(x=>x.id===id);if(!c)return;c.active=c.active===false?true:false;save();renderCashierList()}
+function deleteCashier(id){if(!confirm('Delete this cashier?'))return;DB.cashiers=DB.cashiers.filter(c=>c.id!==id);save();renderCashierList()}
+
+// Hook renderCashierList into renderSettings
+const _origRenderSettings=renderSettings;
+renderSettings=function(){_origRenderSettings();renderCashierList()};
+
 /* Boot */
 load();seed();applyBranding();
+// Pull latest credentials & data from Google Sheet on boot so owner/cashier
+// logins persist across refreshes and devices.
+(async()=>{
+  const remote=await sheetLoad();
+  if(remote){
+    DB=Object.assign({},DEFAULT_DB,remote);
+    DB.settings=Object.assign({},DEFAULT_DB.settings,DB.settings||{});
+    if(!Array.isArray(DB.cashiers))DB.cashiers=[];
+    if(!Array.isArray(DB.campaigns))DB.campaigns=[];
+    localStorage.setItem(KEY,JSON.stringify(DB));
+    applyBranding();
+  }
+})();
 document.getElementById('li-user').value='';
 document.getElementById('li-pass').value='';
 document.getElementById('dp-badge').classList.toggle('on',DB.doublePoints);
 document.getElementById('dp-badge').textContent=DB.doublePoints?'🔥 2× ON':'2× Points';
+// If a session exists, restore it and skip the login screen on reload.
+(function(){
+  const raw=sessionStorage.getItem('los_auth');
+  if(!raw)return;
+  try{
+    const s=typeof raw==='string'&&raw.startsWith('{')?JSON.parse(raw):{role:'owner',cashierId:null,cashierName:null};
+    SESSION=s;
+  }catch{SESSION={role:'owner',cashierId:null,cashierName:null}}
+  if(!SESSION.role)return;
+  showScreen('app');
+  applyRoleVisibility();
+  showPanel(SESSION.role==='owner'?'dashboard':'pos');
+})();
 </script>
 </body>
 </html>
